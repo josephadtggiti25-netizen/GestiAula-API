@@ -1,0 +1,74 @@
+openapi: 3.0.3
+
+info:
+  title: GestiAula API
+  version: 1.0.0
+  description: >
+    Especificación de los servicios REST de GestiAula
+    para la consulta de información académica.
+
+servers:
+  - url: http://localhost:8080
+    description: Servidor local de desarrollo
+
+tags:
+  - name: Alumnos
+    description: Consultas de alumnos
+  - name: Estado
+    description: Estado del servicio
+
+paths:
+  /api/estado:
+    get:
+      tags:
+        - Estado
+      summary: Consultar estado de la API
+      responses:
+        "200":
+          description: La API respondió correctamente
+
+  /api/alumnos:
+    get:
+      tags:
+        - Alumnos
+      summary: Listar alumnos
+      description: Obtiene los alumnos registrados.
+      responses:
+        "200":
+          description: Lista de alumnos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        "500":
+          description: Error interno del servidor
+
+  /api/alumnos/{expediente}:
+    get:
+      tags:
+        - Alumnos
+      summary: Buscar alumno por expediente
+      parameters:
+        - name: expediente
+          in: path
+          required: true
+          description: Expediente del alumno que se desea consultar
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Alumno encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "404":
+          description: Alumno no encontrado
+        "400":
+          description: Expediente inválido
+        "500":
+          description: Error interno del servidor
